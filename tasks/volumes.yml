@@ -1,0 +1,11 @@
+---
+
+- name: Setup sql container volume
+  docker_volume:
+    name: "{{ nextcloud.db_volume }}"
+    state: present
+
+- name: Setup nextcloud container volume
+  docker_volume:
+    name: "{{ nextcloud.volume }}"
+    state: present

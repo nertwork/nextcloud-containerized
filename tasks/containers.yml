@@ -1,0 +1,48 @@
+---
+- name: create nextcloud db
+  docker_container:
+    name: "{{nextcloud.mysql_db_name}}"
+    image: "{{nextcloud.mysql_container_image}}:{{nextcloud.mysql_container_tag}}"
+    state: "{{nextcloud.state}}"
+    restart_policy: "{{nextcloud.restart_policy}}"
+    volumes:
+      "{{nextcloud.db_volume}}:/var/lib/mysql"
+    env:
+      MYSQL_ROOT_PASSWORD: "{{nextcloud.mysql_root_pw}}"
+      MYSQL_PASSWORD: "{{nextcloud.mysql_db_pw}}"
+      MYSQL_DATABASE: "{{nextcloud.mysql_db}}"
+      MYSQL_USER: "{{nextcloud.mysql_db_user}}"
+
+- name: create nextcloud smtp
+  docker_container:
+    name: smtp
+    image: "{{nextcloud.smtp_container_image}}:{{nextcloud.smtp_container_tag}}"
+    state: "{{nextcloud.state}}"
+    restart_policy: "{{nextcloud.restart_policy}}"
+
+- name: create nxtcloud
+  docker_container:
+    name: nextcloud
+    image: "{{nextcloud.nextcloud_container_image}}:{{nextcloud.nextcloud_container_tag}}"
+    state: "{{nextcloud.state}}"
+    restart_policy: "{{nextcloud.restart_policy}}"
+    links:
+      - "{{nextcloud.mysql_db_name}}"
+      - smtp
+    volumes:
+      "{{nextcloud.volume}}:/var/www/html"
+
+- name: create nextcloud nginx
+  docker_container:
+    name: web
+    image: "{{nextcloud.nginx_container_image}}:{{nextcloud.nginx_container_tag}}"
+    state: "{{nextcloud.state}}"
+    restart_policy: "{{nextcloud.restart_policy}}"
+    links:
+      - nextcloud
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/ansible/nginx.conf:/etc/nginx/nginx.conf:ro
+      - "{{nextcloud.nginx_pem_volume}}"
