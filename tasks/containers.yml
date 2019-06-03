@@ -5,6 +5,7 @@
     image: "{{nextcloud.mysql_container_image}}:{{nextcloud.mysql_container_tag}}"
     state: "{{nextcloud.state}}"
     restart_policy: "{{nextcloud.restart_policy}}"
+    pull: "{{nextcloud.pull_policy}}"
     volumes:
       "{{nextcloud.db_volume}}:/var/lib/mysql"
     env:
@@ -19,6 +20,7 @@
     image: "{{nextcloud.smtp_container_image}}:{{nextcloud.smtp_container_tag}}"
     state: "{{nextcloud.state}}"
     restart_policy: "{{nextcloud.restart_policy}}"
+    pull: "{{nextcloud.pull_policy}}"
 
 - name: create nxtcloud
   docker_container:
@@ -31,6 +33,7 @@
       - smtp
     volumes:
       "{{nextcloud.volume}}:/var/www/html"
+    pull: "{{nextcloud.pull_policy}}"
 
 - name: create nextcloud nginx
   docker_container:
@@ -38,6 +41,7 @@
     image: "{{nextcloud.nginx_container_image}}:{{nextcloud.nginx_container_tag}}"
     state: "{{nextcloud.state}}"
     restart_policy: "{{nextcloud.restart_policy}}"
+    pull: "{{nextcloud.pull_policy}}"
     links:
       - nextcloud
     ports:

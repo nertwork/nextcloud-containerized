@@ -19,3 +19,4 @@ nextcloud:
   smtp_container_tag: "latest"
   state: "started"
   volume: "nextcloud"
+  pull_policy: "yes"
