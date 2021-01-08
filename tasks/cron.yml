@@ -1,0 +1,6 @@
+---
+- name: Create Cron Job
+  cron:
+    name: nextcloud cron
+    minute: "*/5"
+    job: docker exec -t -u www-data nextcloud php -f /var/www/html/cron.php
