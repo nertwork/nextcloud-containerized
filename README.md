@@ -2,7 +2,7 @@
 
 An all-in-one nextcloud deployment using nginx, mariadb, smtp in docker containers.
 
-Other variables can be set in [defaults/all.yml](defaults/all.yml) file:
+Other variables can be set in [defaults/main.yml](defaults/main.yml) file:
 
 ```
 nextcloud:
