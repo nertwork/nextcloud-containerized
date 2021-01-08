@@ -24,3 +24,4 @@ nextcloud:
   nextcloud_dir: "/var/ansible"
   remoteip_configuration: true
   proxy_net: "172.17.0.0/16"
+  cron: true
