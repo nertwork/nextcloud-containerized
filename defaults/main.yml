@@ -20,3 +20,7 @@ nextcloud:
   state: "started"
   volume: "nextcloud"
   pull_policy: "yes"
+  nextcloud_dir: "/var/ansible"
+  remoteip_configuration: true
+  proxy_net: "172.17.0.0/16"
+  remoteip_vol_arry: []

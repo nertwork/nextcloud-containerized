@@ -1,4 +1,11 @@
 ---
-  - include_tasks: files.yml
-  - include_tasks: volumes.yml
-  - include_tasks: containers.yml
+- name: set remote_ip array if remoteip configuration is enabled
+  set_fact:
+    librenms.remoteip_conf_arry: ['"{{ nextcloud.nextcloud_dir }}/remoteip.conf:/etc/apache2/conf-available/remoteip.conf"']
+  when: nextcloud.remoteip_configuration is true
+
+- include_tasks: files.yml
+
+- include_tasks: volumes.yml
+
+- include_tasks: containers.yml
