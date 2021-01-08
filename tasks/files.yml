@@ -6,4 +6,10 @@
 - name: Create nextcloud nginx file
   template:
     src: templates/nginx.conf.j2
-    dest: /var/ansible/nginx.conf
+    dest: "{{ nextcloud.nextcloud_dir }}/nginx.conf"
+
+- name: Create nextcloud remoteip file
+  template:
+    src: templates/remoteip.conf.j2
+    dest: "{{ nextcloud.nextcloud_dir }}/remoteip.conf"
+  when: nextcloud.remoteip_configuration | bool

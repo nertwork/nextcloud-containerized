@@ -1,4 +1,5 @@
 ---
+nextcloud_remoteip_conf_arry: []
 nextcloud:
   db_volume: "db"
   mysql_container_image: "mariadb"
@@ -20,3 +21,6 @@ nextcloud:
   state: "started"
   volume: "nextcloud"
   pull_policy: "yes"
+  nextcloud_dir: "/var/ansible"
+  remoteip_configuration: true
+  proxy_net: "172.17.0.0/16"
