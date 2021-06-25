@@ -1,6 +1,6 @@
 ---
-nextcloud_remoteip_conf_arry: []
 nextcloud:
+  containers_prefix: nextcloud
   db_volume: "db"
   mysql_container_image: "mariadb"
   mysql_container_tag: "latest"
@@ -9,12 +9,16 @@ nextcloud:
   mysql_db_pw: "super_secret2"
   mysql_db_user: "nextcloud"
   mysql_root_pw: "super_secret"
+  nextcloud_dir: /opt/nextcloud
   nextcloud_container_image: "nextcloud"
   nextcloud_container_tag: "latest"
   nginx_container_image: "nginx"
   nginx_container_tag: "latest"
   nginx_fqdn: "localhost.localhost"
-  nginx_pem_volume: "/var/ansible/self-signed:/etc/nginx/ssl.pem:ro"
+  nginx_certificate_key: "/var/ansible/self-signed.key::/etc/nginx/ssl.key:ro"
+  nginx_certificate: "/var/ansible/self-signed.pem:/etc/nginx/ssl.pem:ro"
+  nginx_http_port: 80
+  nginx_https_port: 443
   restart_policy: "always"
   smtp_container_image: "namshi/smtp"
   smtp_container_tag: "latest"
@@ -23,5 +27,6 @@ nextcloud:
   pull_policy: "yes"
   nextcloud_dir: "/var/ansible"
   remoteip_configuration: true
+  remoteip_conf_array: []
   proxy_net: "172.17.0.0/16"
   cron: true
