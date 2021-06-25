@@ -16,36 +16,37 @@
 
 - name: create nextcloud smtp
   docker_container:
-    name: smtp
+    name: "{{ nextcloud.containers_prefix }}_smtp"
     image: "{{ nextcloud.smtp_container_image }}:{{ nextcloud.smtp_container_tag }}"
     state: "{{ nextcloud.state }}"
     restart_policy: "{{ nextcloud.restart_policy }}"
     pull: "{{ nextcloud.pull_policy }}"
 
-- name: create nxtcloud
+- name: create nextcloud
   docker_container:
-    name: nextcloud
+    name: "{{ nextcloud.containers_prefix }}_nextcloud"
     image: "{{ nextcloud.nextcloud_container_image }}:{{ nextcloud.nextcloud_container_tag }}"
     state: "{{ nextcloud.state }}"
     restart_policy: "{{ nextcloud.restart_policy }}"
     links:
       - "{{ nextcloud.mysql_db_name }}"
-      - smtp
-    volumes: "{{ nextcloud_remoteip_conf_array }} + ['{{ nextcloud.volume }}:/var/www/html']"
+      - "{{nextcloud.containers_prefix }}_smtp"
+    volumes: "{{ nextcloud.remoteip_conf_array }} + ['{{ nextcloud.volume }}:/var/www/html']"
     pull: "{{ nextcloud.pull_policy }}"
 
 - name: create nextcloud nginx
   docker_container:
-    name: web
+    name: "{{ nextcloud.containers_prefix }}_web"
     image: "{{ nextcloud.nginx_container_image }}:{{ nextcloud.nginx_container_tag }}"
     state: "{{ nextcloud.state }}"
     restart_policy: "{{ nextcloud.restart_policy }}"
     pull: "{{ nextcloud.pull_policy }}"
     links:
-      - nextcloud
+      - "{{nextcloud.containers_prefix }}_nextcloud"
     ports:
-      - "80:80"
-      - "443:443"
+      - "{{ nextcloud.nginx_http_port }}:80"
+      - "{{ nextcloud.nginx_https_port }}:443"
     volumes:
-      - /var/ansible/nginx.conf:/etc/nginx/nginx.conf:ro
-      - "{{ nextcloud.nginx_pem_volume }}"
+      - "{{ nextcloud.nextcloud_dir }}/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "{{ nextcloud.nginx_certificate }}"
+      - "{{ nextcloud.nginx_certificate_key }}"

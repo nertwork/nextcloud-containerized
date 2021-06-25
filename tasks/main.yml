@@ -1,7 +1,7 @@
 ---
 - name: set remote_ip array if remoteip configuration is enabled
   set_fact:
-    nextcloud_remoteip_conf_array: "['{{ nextcloud.nextcloud_dir }}/remoteip.conf:/etc/apache2/conf-available/remoteip.conf']"
+    nextcloud.remoteip_conf_array: "['{{ nextcloud.nextcloud_dir }}/remoteip.conf:/etc/apache2/conf-available/remoteip.conf']"
   when: nextcloud.remoteip_configuration | bool
 
 - include_tasks: files.yml

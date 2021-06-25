@@ -3,6 +3,11 @@
 - name: Create /var/ansible dir
   file: path=/var/ansible state=directory recurse=yes
 
+- name: Create directory for nextcloud if missing
+  file:
+    path: "{{ nextcloud.nextcloud_dir }}"
+    state: directory
+
 - name: Create nextcloud nginx file
   template:
     src: templates/nginx.conf.j2
