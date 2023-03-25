@@ -13,6 +13,8 @@
       MYSQL_PASSWORD: "{{ nextcloud.mysql_db_pw }}"
       MYSQL_DATABASE: "{{ nextcloud.mysql_db }}"
       MYSQL_USER: "{{ nextcloud.mysql_db_user }}"
+    security_opts:
+      - "seccomp:unconfined"
 
 - name: create nextcloud smtp
   docker_container:
@@ -31,7 +33,7 @@
     links:
       - "{{ nextcloud.mysql_db_name }}"
       - smtp
-    volumes: "{{ nextcloud_remoteip_conf_array }} + ['{{ nextcloud.volume }}:/var/www/html']"
+    volumes: "{{ nextcloud.volume }}:/var/www/html"
     pull: "{{ nextcloud.pull_policy }}"
 
 - name: create nextcloud nginx
